@@ -49,7 +49,7 @@
 
 ;2.f
 ;___BONUS___;
-
+;Type: [number*number*number -> void]
 (define (verify-eq m n x)
    (let
 
@@ -65,6 +65,7 @@
      )
   )
 
+;Type: [number -> void]
 (define (check_n cur)
   (if (< cur 1)
       (newline)
@@ -79,6 +80,12 @@
 ;___BONUS___;
 (check_n 3)
 
+
+
+;=============== Question 3 ===============;
+;1.a
+;Type: [number*number -> [number -> number]]
+(define (make-parabola a b) (lambda (x) (+ ((make_times_n a) (square x)) b ) ))
 
 
 
