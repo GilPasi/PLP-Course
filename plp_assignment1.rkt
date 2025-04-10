@@ -28,6 +28,10 @@
 
 ;=============== Question 2 ===============;
 ;2.a
+;Type: [[T1 -> T2] * [T2 -> T3] -> [T1 -> T3]]
 (define (compose2 f g) (lambda (x) (f (g x))))
 
-((compose2 (lambda (x) (+ 1 x)) (lambda (x) (* 2 x)))6)
+;2.b
+(define (logmul m n) (compose2 (lambda (x) (* n x)) (lambda (x) (log x m))))
+
+((logmul 2 3) 16)
