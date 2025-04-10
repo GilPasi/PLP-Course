@@ -44,8 +44,38 @@
 (define (make-log-expt-v2 m n ) (compose2  (lambda (x) (log x m)) (lambda (x) (expt x n))))
 
 ;2.e
-;Type: []
+;Type: [number -> number]
 (define (log2 x) ((make-log-expt 2 1)x))
-((make-log-expt 2 3) 4 )
-((make-log-expt-v2 2 3) 4 )
-(log2 8)
+
+;2.f
+(let*
+    ((x 64)
+     (m1 2) (n1 3) (res1_1  ((make-log-expt-v2 m1 n1)x)) (res1_2  ((make-log-expt m1 n1)x))
+     (m2 4) (n2 5) (res2_1  ((make-log-expt-v2 m2 n2)x)) (res2_2  ((make-log-expt m2 n2)x))
+     (m3 8) (n3 11) (res3_1  ((make-log-expt-v2 m3 n3)x)) (res3_2  ((make-log-expt m3 n3)x))
+
+     )
+  (display res1_1)
+  (newline)
+  (display res1_2)
+  (newline)
+  (display (= res1_1 res1_2))
+  (newline)
+
+  (display res2_1)
+  (newline)
+  (display res2_2)
+  (newline)
+  (display (= res2_1 res2_2))
+  (newline)
+
+
+  (display res3_1)
+  (newline)
+  (display res3_2)
+  (newline)
+  (display (= res3_1 res3_2))
+  (newline)
+)
+
+
