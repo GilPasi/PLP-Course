@@ -51,34 +51,34 @@
 ;___BONUS___;
 
 (define (verify-eq m n x)
-  (
    (let
 
        ((res1 ((make-log-expt-v2 m n)x))
        (res2 ((make-log-expt m n)x)))
-
-     (
+     
         (display res1)
         (newline)
         (display res2)
         (newline)
         (display (= res1 res2))
         (newline)
-        )
      )
-   
-   )
   )
 
-(let*
-    ((x 64)
-     (m1 2) (n1 3) (res1_1  ((make-log-expt-v2 m1 n1)x)) (res1_2  ((make-log-expt m1 n1)x))
-     (m2 4) (n2 5) (res2_1  ((make-log-expt-v2 m2 n2)x)) (res2_2  ((make-log-expt m2 n2)x))
-     (m3 8) (n3 11) (res3_1  ((make-log-expt-v2 m3 n3)x)) (res3_2  ((make-log-expt m3 n3)x))
+(define (check_n cur)
+  (if (< cur 1)
+      (newline)
+    (begin
+      (verify-eq (expt 2 cur) (+ 1 (* 2 cur)) 64)
+      (check_n (- cur 1))
+      )
+    )
+  
+  
+  )
+;___BONUS___;
+(check_n 3)
 
-     )
-  (verify-eq m1 n1 x)
-)
 
 
 
