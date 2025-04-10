@@ -1,6 +1,9 @@
 ;Programming Languages Principles - Assigment 1
 ; Authors: Gil Pasi (________) | Yulia Moshan (_________)
 
+
+;=============== Question 1 ===============;
+
 ;1.a
 ;Type: [number -> number]
 (define (cubicroot num) (expt num (/ 1 3)))
@@ -10,7 +13,7 @@
 (define (3geomavg a b c) (cubicroot (* a b c)))
 
 ;1.c
-;Type: []
+;Type: [number*number*number -> number]
 (define (numLarger a b c)
   (let
 
@@ -23,4 +26,8 @@
     )
  )
 
-(numLarger 1 4 4)
+;=============== Question 2 ===============;
+;2.a
+(define (compose2 f g) (lambda (x) (f (g x))))
+
+((compose2 (lambda (x) (+ 1 x)) (lambda (x) (* 2 x)))6)
