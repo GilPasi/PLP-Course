@@ -32,6 +32,18 @@
 (define (compose2 f g) (lambda (x) (f (g x))))
 
 ;2.b
+;Type: [number*number -> [number -> number]]
 (define (logmul m n) (compose2 (lambda (x) (* n x)) (lambda (x) (log x m))))
 
-((logmul 2 3) 16)
+;2.c
+;Type: [numner*number -> [number -> number]]
+(define (make-log-expt m n) (lambda (x) (log (expt x n) m)))
+
+;2.d
+;Type: [numner*number -> [number -> number]]
+(define (make-log-expt-v2 m n ) (compose2  (lambda (x) (log x m)) (lambda (x) (expt x n))))
+
+
+((make-log-expt 2 3) 4 )
+((make-log-expt-v2 2 3) 4 )
+
