@@ -83,11 +83,17 @@
 
 
 ;=============== Question 3 ===============;
-;1.a
+;3.a
 ;Type: [number*number -> [number -> number]]
+;pre-conditions: a != 0
 (define (make-parabola a b) (lambda (x) (+ ((make_times_n a) (square x)) b ) ))
 
+;3.b
+; Type: [number*number*number -> [number -> number]]
+(define (make-triple a b c)(lambda (x) (* (- x a) (- x b) (- x c))))
 
+;3.c
+(define (make_triple_or_parabola_N))
 
 
 
