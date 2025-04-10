@@ -48,6 +48,28 @@
 (define (log2 x) ((make-log-expt 2 1)x))
 
 ;2.f
+;___BONUS___;
+
+(define (verify-eq m n x)
+  (
+   (let
+
+       ((res1 ((make-log-expt-v2 m n)x))
+       (res2 ((make-log-expt m n)x)))
+
+     (
+        (display res1)
+        (newline)
+        (display res2)
+        (newline)
+        (display (= res1 res2))
+        (newline)
+        )
+     )
+   
+   )
+  )
+
 (let*
     ((x 64)
      (m1 2) (n1 3) (res1_1  ((make-log-expt-v2 m1 n1)x)) (res1_2  ((make-log-expt m1 n1)x))
@@ -55,27 +77,10 @@
      (m3 8) (n3 11) (res3_1  ((make-log-expt-v2 m3 n3)x)) (res3_2  ((make-log-expt m3 n3)x))
 
      )
-  (display res1_1)
-  (newline)
-  (display res1_2)
-  (newline)
-  (display (= res1_1 res1_2))
-  (newline)
-
-  (display res2_1)
-  (newline)
-  (display res2_2)
-  (newline)
-  (display (= res2_1 res2_2))
-  (newline)
-
-
-  (display res3_1)
-  (newline)
-  (display res3_2)
-  (newline)
-  (display (= res3_1 res3_2))
-  (newline)
+  (verify-eq m1 n1 x)
 )
+
+
+
 
 
