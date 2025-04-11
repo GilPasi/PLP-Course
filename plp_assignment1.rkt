@@ -86,14 +86,20 @@
 ;3.a
 ;Type: [number*number -> [number -> number]]
 ;pre-conditions: a != 0
-(define (make-parabola a b) (lambda (x) (+ ((make_times_n a) (square x)) b ) ))
+;(define (make_times_n n) (lambda (x) (* x n)))
+;(define (square x) (* x x))
+(define (make-parabola a b c) (lambda (x) (+ ((make_times_n a) (square x))
+                                             ((make_times_n b) x)
+                                             c )
+                                ))
 
 ;3.b
 ; Type: [number*number*number -> [number -> number]]
 (define (make-triple a b c)(lambda (x) (* (- x a) (- x b) (- x c))))
 
+((make-parabola 8 2 7)5)
 ;3.c
-(define (make_triple_or_parabola_N))
+;(define (make_triple_or_parabola_N ))
 
 
 
