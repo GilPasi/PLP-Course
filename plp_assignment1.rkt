@@ -1,7 +1,5 @@
 ;Programming Languages Principles - Assigment 1
-; Authors: Gil Pasi (________) | Yulia Moshan (_________)
-
-
+; Authors: Gil Pasi ($ID1$) | Yulia Moshan ($ID_YULIA$)
 ;=============== Question 1 ===============;
 
 ;1.a
@@ -78,37 +76,53 @@
   
   )
 ;___BONUS___;
-(check_n 3)
+;(check_n 3)
 
 
 
 ;=============== Question 3 ===============;
 ;3.a
 ;Type: [number*number -> [number -> number]]
-;pre-conditions: a != 0
+;Preconditions: a != 0
 (define (make_times_n n) (lambda (x) (* x n)))
 (define (square x) (* x x))
-(define (make-parabola a b c) (lambda (x) (+ ((make_times_n a) (square x))
-                                             ((make_times_n b) x)
-                                             c )
-                                ))
+(define (make-parabola a b c)
+  (lambda (x) (+
+               ((make_times_n a) (square x))
+               ((make_times_n b) x)
+               c
+               )))
 
 ;3.b
-; Type: [number*number*number -> [number -> number]]
+;Type: [number*number*number -> [number -> number]]
 (define (make-triple a b c)(lambda (x) (* (- x a) (- x b) (- x c))))
 
-((make-parabola 8 2 7)5)
+;((make-parabola 8 2 7)5)
 ;3.c
+;Type: [number*number*number*number -> [number*number*number -> number]]
+;Tests:
+;     ((make_triple_or_parabola_N 8 2 7 5)5);  -> 217 Since 217 > 18
 (define (make_triple_or_parabola_N a b c N)
   (let (
         (parabola (make-parabola a b c)) (triple (make-triple a b c)))
     (if (> (parabola N) (triple N)) parabola triple)
     )
   )
-                                      
 
 
-;((make_triple_or_parabola_N 8 2 7 5)5) 
+;3.d
+;Type: [number*number*number*number -> number]
+;Tests:
+;     (make-triple-parabola 1 2 0 0) -> 1 Since 1*0^2 + 2*0 + 0 = 0 = (0 - 1)*(0 - 2)*(0 - 0) 
+;     (make-triple-parabola 1 2 5 0) -> 5 Since 1*0^2 + 2*0 + 5 >  (0 - 1)*(0 - 2)*(0 - 5)
+(define (make-triple-parabola a b c x)
+  (let ((parabola-val ((make-parabola a b c)x))(triple-val ((make-triple a b c)x)))
+    (if (= parabola-val 0)
+        (if (= triple-val 0)
+            (if (= x 0) 1 x)
+            triple-val)
+        parabola-val))
+  )
 
 
 
