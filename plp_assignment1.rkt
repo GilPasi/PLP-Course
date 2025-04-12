@@ -76,7 +76,7 @@
   
   )
 ;___BONUS___;
-;(check_n 3)
+(check_n 3)
 
 
 
@@ -97,7 +97,6 @@
 ;Type: [number*number*number -> [number -> number]]
 (define (make-triple a b c)(lambda (x) (* (- x a) (- x b) (- x c))))
 
-;((make-parabola 8 2 7)5)
 ;3.c
 ;Type: [number*number*number*number -> [number*number*number -> number]]
 ;Tests:
