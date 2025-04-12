@@ -1,5 +1,5 @@
 ;Programming Languages Principles - Assigment 1
-; Authors: Gil Pasi ($ID1$) | Yulia Moshan ($ID_YULIA$)
+; Authors: Gil Pasi ($ID1$) | Yulia Moshan ($ID2$)
 ;=============== Question 1 ===============;
 
 ;1.a
