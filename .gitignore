@@ -7,5 +7,5 @@
 .#*.scm
 .DS_Store
 SECRETS
-/build/
+**/build/
 
