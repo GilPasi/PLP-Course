@@ -76,7 +76,7 @@
   
   )
 ;___BONUS___;
-(check_n 3)
+;(check_n 3)
 
 
 
@@ -101,7 +101,7 @@
 ;Type: [number*number*number*number -> [number*number*number -> number]]
 ;Tests:
 ;     ((make_triple_or_parabola_N 8 2 7 5)5);  -> 217 Since 217 > 18
-(define (make_triple_or_parabola_N a b c N)
+(define (make_triple_or_parabola_N a b c N) 
   (let (
         (parabola (make_parabola a b c)) (triple (make_triple a b c)))
     (if (> (parabola N) (triple N)) parabola triple)
@@ -122,6 +122,3 @@
             triple-val)
         parabola-val))
   )
-
-
-
