@@ -81,6 +81,7 @@
 
 ;Recursive helper:
 ;Type: [List(T)*List(T)*Number -> List(Pair(T))]
+;Preconditions: length(li) = length(li-rev) >= 2, for any i : li[i] = li-rev[length(li) - i], mid = length(li) / 2
 (define (get-symm-helper li rev-li mid)
   {
    if (<= (length li) mid)
@@ -104,5 +105,30 @@
 (equal? (get-symm (list 1 5 7 8)) (list (cons 1 8) (cons 5 7)))
 (equal? (get-symm (list 1 5 7 8 9)) (list (cons 1 9) (cons 5 8) (cons 7 7)))
 
+;=============== Question 2 ===============;
+;Type: [List([Number->Number])*Number -> List(Number)]
+;Preconditions: No null elements other than the tail element
+;Tests:
+;(apply-f-list
+; (list (lambda (x) (+ x 1))
+;       (lambda (x) (* x 3))
+;       (lambda (x) x)
+;       (lambda (x) (- 5 x)))
+; 1
+; )  ->  (2 3 1 4)
 
+(define (apply-f-list li x)
+  {
+   if (null? li)
+      null
+      (cons ((car li) x) (apply-f-list (cdr li) x) )
+   }
+  )
 
+(apply-f-list
+ (list (lambda (x) (+ x 1))
+       (lambda (x) (* x 3))
+       (lambda (x) x)
+       (lambda (x) (- 5 x)))
+ 1
+ )
