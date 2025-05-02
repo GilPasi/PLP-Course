@@ -158,8 +158,9 @@
 
 ;=============== Question 3 ===============;
 ;3.a
-;Type: [Number*Number*Number -> Number]d
+;Type: [Number*Number*Number -> Number]
 ;Preconditions: n is a natual number
+;Tests: (dist_pwr 1 3 1) -> 2
 (define (dist_pwr num1 num2 n)
   {
    let [
@@ -170,4 +171,30 @@
     }
   )
 
-(dist_pwr 1 3 1)
+(equal? (dist_pwr 1 3 1) 2 )
+
+;3.b
+;Type: [List(Number)*Number*Number -> List(Number)]
+;Preconditions: n is a natual number
+;Tests: (compute_dists (list 1 2 3 4) 5 2) -> (4 3 2 1)
+(define (compute_dists li num n)
+  {
+   if (null? li)
+      null
+      (cons (dist_pwr (car li) num n) (compute_dists (cdr li) num n))
+   }
+)
+(equal? (compute_dists (list 1 2 3 4) 5 2) (list 4 3 2 1))
+
+;3.c
+;Type: [List(Number)*Number*Number -> List(Number)]
+;Preconditions: n is a natual number
+;Tests: (compute_dists_map (list 1 2 3 4) 5 2) -> (4 3 2 1)
+(define (compute_dists_map li num n)
+  {
+   letrec ((repeat (lambda (x len) (if (<= len 0) null (cons x (repeat x (- len 1) ))))))
+    {map dist_pwr li (repeat num (length li)) (repeat n (length li))}
+   }
+)
+(equal? (compute_dists_map (list 1 2 3 4) 5 2) (list 4 3 2 1))
+
