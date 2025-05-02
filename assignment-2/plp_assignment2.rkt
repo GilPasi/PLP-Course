@@ -39,17 +39,25 @@
 
 ;1.c
 ;Type: [List(T) -> List(T)]
-;Tests
-;(reverse-li (list 1 2 3)) -> (3 2 1)
-(define (reverse-li-helper li prev)
+;Preconditions: No null elements other than the tail element
+;Tests (reverse-li (list 1 2 3 4)) -> (4 3 2 1)
+(define (reverse-li li)
   {
-   if
-    (not (null? li))
-    (reverse-li-helper (cdr li) (cons (car li) prev))
-    prev
-  }
-)
+   letrec [(reverse-li-helper
+            (lambda (li prev)
+              {
+               if
+               (not (null? li))
+               (reverse-li-helper (cdr li) (cons (car li) prev))
+               prev
+               }
+            ))]
+    (reverse-li-helper li null)
+    }
+  )
 
-(define (reverse-li li) (reverse-li-helper li null))
 (equal? (reverse-li (list 1 2 3 4)) (list 4 3 2 1))
 
+;1.d
+;Type: [List(Symbol) -> Boolean]
+;Preconditions:
