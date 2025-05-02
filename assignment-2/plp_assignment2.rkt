@@ -60,4 +60,16 @@
 
 ;1.d
 ;Type: [List(Symbol) -> Boolean]
-;Preconditions:
+;Preconditions: length(list) > 0, Each element must be a symbol of a real special form
+;Tests: (is-special-form? '(if lambda define) '((lambda (x)x)1)) -> #f
+;       (is-special-form? '(if lambda define) '(lambda (x)x))    -> #t
+(define (is-special-form? li exp)
+   (and
+    (not(pair? (car exp)))
+    (not(not (member (car exp) li))) ;(not(not ...))  Coverts a truthy value to truth
+    )
+)
+
+(newline)
+(eq? (is-special-form? '(if lambda define) '((lambda (x)x)1)) #f)
+(eq? (is-special-form? '(if lambda define) '(lambda (x)x)) #t)
