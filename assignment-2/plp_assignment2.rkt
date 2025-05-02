@@ -106,6 +106,7 @@
 (equal? (get-symm (list 1 5 7 8 9)) (list (cons 1 9) (cons 5 8) (cons 7 7)))
 
 ;=============== Question 2 ===============;
+;2.a
 ;Type: [List([Number->Number])*Number -> List(Number)]
 ;Preconditions: No null elements other than the tail element
 ;Tests:
@@ -125,10 +126,34 @@
    }
   )
 
-(apply-f-list
+(equal? (apply-f-list
  (list (lambda (x) (+ x 1))
        (lambda (x) (* x 3))
        (lambda (x) x)
        (lambda (x) (- 5 x)))
  1
- )
+ ) (list 2 3 1 4))
+
+;2.b
+;Type: [List([T->T])*T -> T]
+;Preconditions: No null elements other than the tail element
+;Tests: (apply-fs-single (list
+;                  (lambda (x) (* x 2))
+;                  (lambda (x) (* x 10))
+;                  (lambda (x) (+ x 1)))
+;                 1) -> 21
+(define (apply-fs-single f-li e)
+{
+ if (null? f-li)
+    e
+    (apply-fs-single (cdr f-li) ((car f-li) e))
+ }
+)
+
+(equal? (apply-fs-single (list
+                  (lambda (x) (* x 2))
+                  (lambda (x) (* x 10))
+                  (lambda (x) (+ x 1)))
+                 1) 21)
+
+
