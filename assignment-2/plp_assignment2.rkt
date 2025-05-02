@@ -156,4 +156,18 @@
                   (lambda (x) (+ x 1)))
                  1) 21)
 
+;=============== Question 3 ===============;
+;3.a
+;Type: [Number*Number*Number -> Number]d
+;Preconditions: n is a natual number
+(define (dist_pwr num1 num2 n)
+  {
+   let [
+        (abs (lambda (x) (if (> x 0) x (* x -1))))
+        (result (expt (expt (- num1 num2) n) (/ 1 n)))
+        ]
+    (if (= n 1) (abs result) result )
+    }
+  )
 
+(dist_pwr 1 3 1)
