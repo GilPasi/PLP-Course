@@ -66,10 +66,33 @@
 (define (is-special-form? li exp)
    (and
     (not(pair? (car exp)))
-    (not(not (member (car exp) li))) ;(not(not ...))  Coverts a truthy value to truth
+    (not(not (member (car exp) li))) ;(not(not ...))  Coverts a truthy value into true
     )
 )
 
-(newline)
 (eq? (is-special-form? '(if lambda define) '((lambda (x)x)1)) #f)
 (eq? (is-special-form? '(if lambda define) '(lambda (x)x)) #t)
+
+;1.e
+;Type: [ List(T) -> List(Pair(T))]
+;Preconditions: length(list) >= 2, No null elements other than the tail element
+;Tests: (get-symm (list 1 5 7 8 9)) -> ((1 . 9) (5 . 8) (7 . 7))
+;       (get-symm (list 1 5 7 8))   -> ((1 . 8) (5 . 7))
+
+(define (get-symm li)
+  {
+   letrec ((get-symm-helper
+            (lambda (li rev-li mid)
+              {
+               if (<= (length li) mid)
+                  null
+                  (cons (cons (car li ) (car rev-li)) (get-symm-helper (cdr li) (cdr rev-li) mid))
+                  
+               }
+              )))
+     (get-symm-helper li (reverse-li li) ( / (length li ) 2))
+   }
+)
+
+(equal? (get-symm (list 1 5 7 8)) (list (cons 1 8) (cons 5 7)))
+(equal? (get-symm (list 1 5 7 8 9)) (list (cons 1 9) (cons 5 8) (cons 7 7)))
