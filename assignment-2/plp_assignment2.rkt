@@ -79,20 +79,30 @@
 ;Tests: (get-symm (list 1 5 7 8 9)) -> ((1 . 9) (5 . 8) (7 . 7))
 ;       (get-symm (list 1 5 7 8))   -> ((1 . 8) (5 . 7))
 
+;Recursive helper:
+;Type: [List(T)*List(T)*Number -> List(Pair(T))]
+(define (get-symm-helper li rev-li mid)
+  {
+   if (<= (length li) mid)
+      null
+      (cons (cons (car li ) (car rev-li)) (get-symm-helper (cdr li) (cdr rev-li) mid))
+                  
+      }
+  )
+
 (define (get-symm li)
   {
-   letrec ((get-symm-helper
-            (lambda (li rev-li mid)
-              {
-               if (<= (length li) mid)
-                  null
-                  (cons (cons (car li ) (car rev-li)) (get-symm-helper (cdr li) (cdr rev-li) mid))
-                  
-               }
-              )))
-     (get-symm-helper li (reverse-li li) ( / (length li ) 2))
-   }
+   if (< (length li) 2)
+      li
+      (get-symm-helper
+       li
+       (reverse-li li)
+       ( / (length li ) 2))
+  }
 )
 
 (equal? (get-symm (list 1 5 7 8)) (list (cons 1 8) (cons 5 7)))
 (equal? (get-symm (list 1 5 7 8 9)) (list (cons 1 9) (cons 5 8) (cons 7 7)))
+
+
+
