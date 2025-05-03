@@ -65,13 +65,14 @@
 ;       (is-special-form? '(if lambda define) '(lambda (x)x))    -> #t
 (define (is-special-form? li exp)
    (and
-    (not(pair? (car exp)))
+    (not(null? exp))
     (not(not (member (car exp) li))) ;(not(not ...))  Coverts a truthy value into true
     )
 )
 
-(eq? (is-special-form? '(if lambda define) '((lambda (x)x)1)) #f)
+(eq? (is-special-form? '(if lambda define) '()) #f)
 (eq? (is-special-form? '(if lambda define) '(lambda (x)x)) #t)
+(eq? (is-special-form? '(if lambda define) '((lambda (x)x)2)) #f)
 
 ;1.e
 ;Type: [ List(T) -> List(Pair(T))]
@@ -163,19 +164,21 @@
 ;Tests: (dist_pwr 1 3 1) -> 2
 (define (dist_pwr num1 num2 n)
   {
-   let [
+   let*[
         (abs (lambda (x) (if (> x 0) x (* x -1))))
-        (result (expt (expt (- num1 num2) n) (/ 1 n)))
+        (delta (- num1 num2))
+        (sign (if (and (< delta 0) (odd? n)) -1 1)); This helps getting only real numbers
+        (result (* sign (expt (expt (abs delta) n) (/ 1 n))))
         ]
     (if (= n 1) (abs result) result )
     }
   )
 
 (equal? (dist_pwr 1 3 1) 2 )
-
+(equal? (dist_pwr 1 3 3) -2.0 )
 ;3.b
 ;Type: [List(Number)*Number*Number -> List(Number)]
-;Preconditions: n is a natual number
+;Preconditions: n is a natual number, No null elements other than the tail element
 ;Tests: (compute_dists (list 1 2 3 4) 5 2) -> (4 3 2 1)
 (define (compute_dists li num n)
   {
@@ -188,7 +191,7 @@
 
 ;3.c
 ;Type: [List(Number)*Number*Number -> List(Number)]
-;Preconditions: n is a natual number
+;Preconditions: n is a natual number, No null elements other than the tail element
 ;Tests: (compute_dists_map (list 1 2 3 4) 5 2) -> (4 3 2 1)
 (define (compute_dists_map li num n)
   {
@@ -197,4 +200,25 @@
    }
 )
 (equal? (compute_dists_map (list 1 2 3 4) 5 2) (list 4 3 2 1))
+
+;3.d
+
+;3.e
+;Type: [List(Number)*Number*Number*Number -> List(List(Number))]
+;Preconditions: min_pwr and max_pwr are a natual numbers, max_pwr > min_pwr, No null elements other than the tail element
+(define (compute_dists_pwr_range li num min_pwr max_pwr)
+{
+ if (< max_pwr min_pwr)
+    null
+    (cons
+     (compute_dists li num min_pwr)
+     (compute_dists_pwr_range li num (+ min_pwr 1) max_pwr)
+     )
+ }
+)
+
+;(compute_dists_pwr_range (list 1 2 3 4) 5 2 5)
+
+;(compute_dists (list 1 2 3 4 5) 5 3)
+
 
