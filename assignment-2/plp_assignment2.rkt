@@ -206,6 +206,7 @@
 ;3.e
 ;Type: [List(Number)*Number*Number*Number -> List(List(Number))]
 ;Preconditions: min_pwr and max_pwr are a natual numbers, max_pwr > min_pwr, No null elements other than the tail element
+;Tests: (compute_dists_pwr_range (list 1 2 3 4) 5 2 5) -> ((4 3 2 1) (-3.9999999999999996 -3.0 -2.0 -1) (4.0 3.0 2.0 1) (-4.0 -3.0 -2.0 -1))
 (define (compute_dists_pwr_range li num min_pwr max_pwr)
 {
  if (< max_pwr min_pwr)
@@ -217,8 +218,5 @@
  }
 )
 
-;(compute_dists_pwr_range (list 1 2 3 4) 5 2 5)
-
-;(compute_dists (list 1 2 3 4 5) 5 3)
 
 
