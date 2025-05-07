@@ -3,6 +3,8 @@
 ;Programming Languages Principles - Assigment 2
 ; Authors: Gil Pasi ($ID1$) | Yulia Moshan ($ID2$)
 
+;Preconditions to any list in the assisgment: Cannot have any null member which is not the end of the list.
+
 ;=============== Question 1 ===============;
 ;1.a
 (define (make-dup-list li)  
@@ -59,23 +61,35 @@
 ;=============== Question 3 ===============;
 ;3.a
 (define (dist_pwr num1 num2 n)
-  (let* ((abs (lambda (x) (if (> x 0) x (* x -1))))
-         (delta (- num1 num2))
-         (sign (if (and (< delta 0) (odd? n)) -1 1))
-         (result (* sign (expt (expt (abs delta) n) (/ 1 n)))))
-    (if (= n 1) (abs result) result)))
+  (expt (abs (- (expt num1 n) (expt num2 n))) (/ 1 n))
+)
 
+;Type: [List(Number)*Number*Number* -> List(Number)]
+;Preconditions: None
+;Tests: (compute_dists_map '(1 2 3 4 5) 7 5) -> '(6.999916699391883 6.997332411605517 6.979640344934702 6.9125440412768695 6.717844041250845)
 ;3.b
 (define (compute_dists li num n)
   (if (null? li)
       null
       (cons (dist_pwr (car li) num n) (compute_dists (cdr li) num n))))
 
+;Type: [List(Number)*Number*Number* -> List(Number)]
+;Preconditions: None
+;Tests: (compute_dists_map '(1 2 3 4 5) 7 5) -> '(6.999916699391883 6.997332411605517 6.979640344934702 6.9125440412768695 6.717844041250845)
 ;3.c
 (define (compute_dists_map li num n)
   (letrec ((repeat (lambda (x len)
                      (if (<= len 0) null (cons x (repeat x (- len 1)))))))
     (map dist_pwr li (repeat num (length li)) (repeat n (length li)))))
+
+;Type: [List(Number)*Number*Number*Number*Number -> List(Number)]
+;Preconditions: min > max
+;Tests: (dists_in_range '(1 2 3 4 5) 7 5 6.9 10) -> '(6.717844041250845)
+;3.d
+(define (dists_in_range li num n min max)(filter
+                                          (lambda (e)(or (<= e min) (>= e max)))
+                                          (compute_dists_map li num n))
+)
 
 ;3.e
 (define (compute_dists_pwr_range li num min_pwr max_pwr)
@@ -84,6 +98,8 @@
       (cons (compute_dists li num min_pwr)
             (compute_dists_pwr_range li num (+ min_pwr 1) max_pwr))))
 
+;3.f
+;(define (dist_mat ))
 
 ;Dear assignment grader! Please ignore this section, it's for my one testing
 (provide
@@ -99,5 +115,3 @@
   compute_dists_map
   compute_dists_pwr_range
 )
-
-(make-dup-list (list 1 2 3 4))
