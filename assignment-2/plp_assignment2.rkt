@@ -176,5 +176,5 @@
   compute_dists_map
   dists_in_range
   compute_dists_pwr_range
-  dist_mat_helper
+  dist_mat
 )
