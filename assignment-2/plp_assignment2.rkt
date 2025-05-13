@@ -39,8 +39,8 @@
     (reverse-li-helper li null)))
 
 ;1.d
-;Type: [List(Symbol) -> Boolean]
-;Preconditions: length(list) > 0, Each element must be a symbol of a real special form
+;Type: [List(Symbol)*List(Symbol) -> Boolean]
+;Preconditions: length(li) > 0, Each element in li must be a symbol of a real special form
 ;Tests: (is-special-form? '(if lambda define) '((lambda (x)x)1)) -> #f
 ;       (is-special-form? '(if lambda define) '(lambda (x)x))    -> #t
 (define (is-special-form? li exp)
