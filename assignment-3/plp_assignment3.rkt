@@ -161,7 +161,7 @@
   )
 
 
-;2.c
+;3.c
 ;###Stub assignments to avoid program failure###
 (define eval-var null)
 (define eval-define null)
@@ -176,6 +176,8 @@
     [(symbol? expr) (eval-var expr)]
     ;=============================================
     [(or-positive? expr) (eval-or-positive expr)]
+    [(get-procedure-params? expr) (eval-procedure-params expr)]
+    [(get-procedure-body? expr) (eval-procedure-body expr)]
     ;=============================================
     [(define? expr) (eval-define expr)]
     [(if? expr) (eval-if expr)]
@@ -211,7 +213,66 @@
        (lambda (subject) (cons '> (cons subject (cons '0 null))))
        (get-expressions exp)))
 
-(or-positive->or '(or-positive 1 5 (- 1 1)))
+
+;=============== Question 4 ===============;
+;4.a
+;Type: [Symbol U List(Symbol) -> Expression]
+;Preconditions: None
+(define (make-get-procedure-params proc)
+  (make-expression 'get-procedure-params proc))
+
+;Type: [Symbol U List(Symbol) -> Expression]
+;Preconditions: None
+(define (make-get-procedure-body proc)
+  (make-expression 'get-procedure-body proc))
+
+;Type: [Expression -> List(Symbol)]
+;Preconditions: get-content(expr) ∈ ClosureExpressions
+(define (procedure-params expr) (closure-params expr))
+
+;Type: [Expression -> List(Symbol)]
+;Preconditions: get-content(expr) ∈ ClosureExpressions
+(define (procedure-body expr) (closure-body expr))
+
+;Type: [T -> Boolean]
+;Preconditions: None
+(define (get-procedure-params? expr)
+  (tagged-by? expr 'get-procedure-params))
+
+;Type: [T -> Boolean]
+;Preconditions: None
+(define (get-procedure-body? expr)
+  (tagged-by? expr 'get-procedure-body))
 
 
+;4.b:
+; Changes in eval_ are in done at 2.c
+;Type: [Expression -> List(Symbol) U Void]
+;Preconditions: None 
+(define (eval-procedure-params expr)
+  (let ((subject (eval_  expr)))
+    (cond
+      ((closure? subject) (procedure-params expr))
+      ((procedure? subject) (begin (display "primitive! Implementation hidden") (newline)))
+      (else (begin (display "error: non-procedure") (newline)))
+      ))
+  )
+
+;Type: [Expression -> List(Symbol) U Void]
+;Preconditions: None 
+(define (eval-procedure-body expr)
+  (let ((subject (eval_  expr)))
+    (cond
+      ((closure? subject) (procedure-body expr))
+      ((procedure? subject) (begin (display "primitive! Implementation hidden") (newline)))
+      (else (begin (display "error: non-procedure") (newline)))
+      ))
+  )
+
+
+;4.e
+; Those expressions must be a core expression since inspecting a procedure's
+; internals requires creating a closure of it.
+; For example dropping the eval_ in the application (get-procedure-body f)
+; will result an error even though its possible that f was defined priorly as a valid procedure.
 

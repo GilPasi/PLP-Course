@@ -1,6 +1,6 @@
 #lang racket
 ;
-(provide eval_ user-eval )
+(provide eval_ user-eval)
 
 (require "adt.rkt"
          "parser.rkt")
