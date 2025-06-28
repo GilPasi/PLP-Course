@@ -178,6 +178,7 @@
     [(or-positive? expr) (eval-or-positive expr)]
     [(get-procedure-params? expr) (eval-procedure-params expr)]
     [(get-procedure-body? expr) (eval-procedure-body expr)]
+    [(define-f2? expr) (eval-define-f2 expr)]
     ;=============================================
     [(define? expr) (eval-define expr)]
     [(if? expr) (eval-if expr)]
@@ -275,4 +276,87 @@
 ; internals requires creating a closure of it.
 ; For example dropping the eval_ in the application (get-procedure-body f)
 ; will result an error even though its possible that f was defined priorly as a valid procedure.
+
+
+;=============== Question 5 ===============;
+;5.a
+;Type: [Symbol*Symbol*Symbol -> Expresssion]
+;Preconditions: None
+(define (make-define-f2 f-name var1 var2 body)
+                        (make-expression 'define-f2 (list f-name var1 var2 body)))
+;Type [T -> Boolean]
+;Preconditions: None
+(define (define-f2? expr)(tagged-by? expr 'define-f2))
+
+;Type: [Expression -> Symbol]
+;Preconditions: get-content(expr)[0] ∈ Symbols
+(define (get-fname expr) (ref (get-content expr) 0))
+
+;Type: [Expression -> Symbol]
+;Preconditions: get-content(expr)[1] ∈ Symbols
+(define (get-var1 expr) (ref (get-content expr) 1))
+
+
+;Type: [Expression -> Symbol]
+;Preconditions: get-content(expr)[2] ∈ Symbols
+(define (get-var2 expr) (ref (get-content expr) 2))
+
+;Type: [Expression -> List(Symbol) U Symbol ]
+;Preconditions: get-content(expr)[3] ∈ SymbolLists U Symbols
+(define (get-body expr) (ref (get-content expr) 3))
+
+
+;5.b:
+; Changes in eval_ are in done at 2.c
+;###Stub assignments to avoid program failure###
+(define is-defined? null)
+(define extend-env! null)
+;###############################################
+;Type: [Expression -> Void]
+;Preconditions: None
+(define (eval-define-f2 expr)
+  (let (
+        (fname (get-fname expr))
+        (var1 (get-var1 expr))
+        (var2 (get-var2 expr))
+        (body (get-body expr))
+        )
+    (if (is-defined? fname)
+        (error "Procedure already defined:" fname)
+        (begin
+          (extend-env! fname
+                       (make-closure
+                        (list var1 var2)
+                        body))
+          fname)))
+    )
+
+;5.c
+'(define (g x y)
+  (if (> x y) x (g (+ x 1) (- y 1))))
+
+'(define g (lambda (x y)
+   (if (> x y) x (g (+ x 1) (- y 1)))))
+
+
+;5.d
+;Type: [Expression -> Expression]
+;Preconditions: get-content(expr)[0] ∈ Symbols
+; get-content(expr)[1] ∈ Symbols
+; get-content(expr)[2] ∈ Symbols
+; get-content(expr)[3] ∈ SymbolLists U Symbols
+(define (define-f2->define expr)
+        (let (
+              (fname (get-fname expr))
+              (var1 (get-var1 expr))
+              (var2 (get-var2 expr))
+              (body (get-body expr))
+        )
+          (make-expression
+           'define
+           (list
+            (list fname var1 var2)
+            body))
+          )
+)
 
