@@ -111,7 +111,8 @@
 
 
 ;3.b
-;[Expression -> List(Symbol)]
+;Type: [Expression -> List(Symbol)]
+;Preconditions: None
 (define get-expressions get-content)
 ;Type: [List(Symbol) -> Expression]
 ;Preconditions: |subjects| > 0
@@ -160,12 +161,57 @@
   )
 
 
+;2.c
+;###Stub assignments to avoid program failure###
+(define eval-var null)
+(define eval-define null)
+(define eval-if null)
+(define eval-lambda null)
+(define eval-application null)
+;###############################################
+(define (eval_with-or-positive expr)
+  (cond
+    [(primitive? expr) expr]
+    [(value? expr) expr]
+    [(symbol? expr) (eval-var expr)]
+    ;=============================================
+    [(or-positive? expr) (eval-or-positive expr)]
+    ;=============================================
+    [(define? expr) (eval-define expr)]
+    [(if? expr) (eval-if expr)]
+    [(lambda? expr) (eval-lambda expr)]
+    [(application? expr)
+     (eval-application (eval_ (application-operator expr))
+                       (map eval_ (application-operands expr)))]
+    [else (error "Unknown expression:" expr)])
+  )
+
+;2.d
+;Type: [Expression -> Boolean]
+;Preconditions: |get-expressions(expr)| > 0, eval(get-expressions(expr)[i]) ∈ Numbers
+;for any 0 <= i <|get-expressions(expr)|, i is a natural number
+(define (eval-or-positive expr)
+  (eval-or-positive-helper (get-expressions expr)))
+
+(define (eval-or-positive-helper subjects)
+  (let ((first (first-exp subjects)))
+    (if (> (eval_ first) 0)
+        #t
+        (and (not (last-exp? subjects first))
+             (eval-or-positive (cdr subjects)))
+        )
+    ))
+
+;2.e
+; Derived or expression: (or (> 1 0) (> (+1 1) 0) (> 3 0))
+;Type: [Expression -> Expression]
+;Preconditions: None
+(define (or-positive->or exp)
+  (map 
+       (lambda (subject) (cons '> (cons subject (cons '0 null))))
+       (get-expressions exp)))
+
+(or-positive->or '(or-positive 1 5 (- 1 1)))
 
 
-(define orp-exp (make-or-positive '(a 2 5 -4 4 1 a)))
-(get-expressions orp-exp)
-;(first-exp (get-content orp-exp))
-;(second-exp (get-content orp-exp))
-;(last-exp? '(a b (> 1 2)) '(> 1 2))
-(rest-exps (get-content orp-exp))
 
