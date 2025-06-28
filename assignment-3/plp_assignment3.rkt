@@ -1,5 +1,6 @@
 #lang racket
 (require "adt.rkt")
+(require "EVAL_Parser_4Parts/evaluator.rkt")
 ;Programming Languages Principles - Assigment 3
 ; Authors: Gil Pasi ($ID1$) | Yulia Moshan ($ID2$)
 ;=============== Question 2 ===============;
@@ -58,7 +59,7 @@
   (attach-tag (cons p1(/
    (- (get-x p1)(get-x  p2))
    (- (get-y p1)(get-y p2))
-   )))
+   )) 'line)
   )
 ;Type: [Point*Number -> TaggedData(Pair(Point*Number))]
 ;Preconditions: None
@@ -90,3 +91,81 @@
           li
           )
   )
+
+
+;=============== Question 3 ===============;
+;3.a
+; The "or-positive" expression must be a special form for 2 reasons.
+; First, procedures support only a constant number of parameters like 1,2,7 or 100 but not n.
+; According the the description this form is not limited to a specific number (This can be resolved
+; by using just one list parameter which is not size-limited).
+; However this will not solve a bigger issue with recursive use of this expression, e.g:
+;(define (f x)
+; (if
+;   (or-positive x (f (- x 1)))
+;   1 -1)
+;)
+;(f 10)
+; In this case, for an eager evaluation of the parameters, the expression (f (+ x 1))
+; can be evaluated infinitely.
+
+
+;3.b
+;[Expression -> List(Symbol)]
+(define get-expressions get-content)
+;Type: [List(Symbol) -> Expression]
+;Preconditions: |subjects| > 0
+(define (make-or-positive subjects)(make-expression 'or-positive subjects))
+;Type: [List(Symbol) -> Symbol]
+;Preconditions: |exps| > 0
+(define (first-exp exps)(ref exps 0))
+;Type: [List(Symbol) -> Symbol]
+;Preconditions: |exps| > 1
+(define (second-exp exps)(ref exps 1))
+;Type: [List(Symbol) -> List(Symbol)]
+;Preconditions: |exps| > 2
+(define (rest-exps exps) (letrec
+                             ((rest-exps-helper
+                              (lambda (exps idx)
+                                (let ((cur (ref exps idx)))
+                                  (if (last-exp? exps cur)
+                                    (cons cur null)
+                                    (cons cur (rest-exps-helper exps (+ 1 idx)))
+                                    ))
+                                )))
+                           (rest-exps-helper exps 2)
+                           ))
+
+
+
+;Type: [T -> Boolean]
+;Preconditions: None
+(define (or-positive? expr) (tagged-by? 'or-positive))
+
+;Type: [(List(Symbol) U Vector(Symbol))*Symbol -> Boolean]
+;Preconditions: None
+(define (last-exp? exps exp)
+  (let ((l
+        (cond
+          ((list? exps) (length exps))
+          ((vector? exps) (vector-length exps))
+          (else -1)
+              )))
+    
+      (if (= l -1)
+        (error "Unsupported data structure:" exps)
+        (equal? exp (ref exps (- l 1)))
+        )
+    )
+  )
+
+
+
+
+(define orp-exp (make-or-positive '(a 2 5 -4 4 1 a)))
+(get-expressions orp-exp)
+;(first-exp (get-content orp-exp))
+;(second-exp (get-content orp-exp))
+;(last-exp? '(a b (> 1 2)) '(> 1 2))
+(rest-exps (get-content orp-exp))
+

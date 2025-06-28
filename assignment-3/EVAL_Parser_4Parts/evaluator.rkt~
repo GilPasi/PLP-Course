@@ -57,8 +57,7 @@
     [(application? expr)
      (eval-application (eval_ (application-operator expr))
                        (map eval_ (application-operands expr)))]
-    [else (error "Unknown expression:" expr)])
-  )
+    [else (error "Unknown expression:" expr)]))
 
 ;; Variable evaluation
 (define (eval-var expr)
