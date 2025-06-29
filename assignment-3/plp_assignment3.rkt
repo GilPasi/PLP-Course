@@ -95,19 +95,16 @@
 
 ;=============== Question 3 ===============;
 ;3.a
-; The "or-positive" expression must be a special form for 2 reasons.
-; First, procedures support only a constant number of parameters like 1,2,7 or 100 but not n.
-; According the the description this form is not limited to a specific number (This can be resolved
-; by using just one list parameter which is not size-limited).
-; However this will not solve a bigger issue with recursive use of this expression, e.g:
+; The "or-positive" expression must be a special form because of a problem that rise
+; with an eager evaluation in recursive calls. e.g: 
 ;(define (f x)
 ; (if
 ;   (or-positive x (f (- x 1)))
 ;   1 -1)
 ;)
 ;(f 10)
-; In this case, for an eager evaluation of the parameters, the expression (f (+ x 1))
-; can be evaluated infinitely.
+; In this case, evaluation of the parameters, the expression (f (+ x 1))
+; can be evaluated infinitely even thought this behavior is not intended.
 
 
 ;3.b
@@ -210,10 +207,10 @@
 ;Type: [Expression -> Expression]
 ;Preconditions: None
 (define (or-positive->or exp)
-  (map 
+  (cons 'or
+        (map 
        (lambda (subject) (cons '> (cons subject (cons '0 null))))
-       (get-expressions exp)))
-
+       (get-expressions exp))))
 
 ;=============== Question 4 ===============;
 ;4.a
@@ -313,7 +310,10 @@
 (define extend-env! null)
 ;###############################################
 ;Type: [Expression -> Void]
-;Preconditions: None
+;Preconditions: get-content(expr)[0] ∈ Symbols
+; get-content(expr)[1] ∈ Symbols
+; get-content(expr)[2] ∈ Symbols
+; get-content(expr)[3] ∈ SymbolLists U Symbols
 (define (eval-define-f2 expr)
   (let (
         (fname (get-fname expr))
