@@ -1,1 +1,0 @@
-("8.12" tarm64osx ("7a0a94ca6f6751bf6605496706bd8cdfd204ca4a" . "930f5087e429aa32e67d99a96111ae3104f7caa4") #"/Users/gilpasi/Desktop/study/year-3/programming-languages-principles/PLP-Course/assignment-3/EVAL_Parser_4Parts/adt.rkt" (collects #"drracket" #"private" #"drracket-errortrace-key.rkt") (collects #"racket" #"main.rkt") (collects #"racket" #"runtime-config.rkt"))
